@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teleport BMC Access — CoreWeave Visual Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cw-blue: #4264ff;
+    --cw-blue-light: #6b87ff;
+    --cw-blue-pale: #eef1ff;
+    --cw-blue-wash: #f5f7ff;
+    --cw-navy: #1B1E37;
+    --cw-navy-light: #2a2e4a;
+    --bg: #fcfcfe;
+    --bg-card: #ffffff;
+    --bg-surface: #f8fafc;
+    --border: #e6e8ed;
+    --border-light: #eef0f4;
+    --text: #1B1E37;
+    --text-body: #64636d;
+    --text-muted: #8b8a94;
+    --text-faint: #b0afb8;
+    --success: #16a34a;
+    --success-bg: #f0fdf4;
+    --warning: #d97706;
+    --warning-bg: #fffbeb;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --info: #4264ff;
+    --info-bg: #eef1ff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 14mm 16mm 12mm;
+    page-break-after: always;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header bar ── */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6mm;
+    padding-bottom: 4mm;
+    border-bottom: 2px solid var(--cw-blue);
+  }
+  .page-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cw-logo {
+    width: 24px;
+    height: 24px;
+  }
+  .page-brand {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--cw-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .page-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--cw-navy);
+    letter-spacing: -0.03em;
+    margin-bottom: 2mm;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--cw-navy);
+    margin-bottom: 3mm;
+    margin-top: 5mm;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cw-navy);
+    margin-bottom: 2mm;
+    margin-top: 3mm;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-body);
+    margin-bottom: 5mm;
+    font-weight: 500;
+  }
+
+  /* ── Talk blocks ── */
+  .talk {
+    font-size: 12px;
+    color: var(--text-body);
+    line-height: 1.7;
+    margin-bottom: 4mm;
+    padding: 10px 12px;
+    border-left: 3px solid var(--cw-blue);
+    background: var(--cw-blue-wash);
+    border-radius: 0 6px 6px 0;
+  }
+  .talk strong { color: var(--cw-navy); }
+  .talk em { color: var(--cw-blue); font-style: normal; font-weight: 600; }
+  .talk code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    background: white;
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--cw-blue);
+    border: 1px solid var(--border);
+  }
+
+  .callout {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text-body);
+    margin: 3mm 0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .callout-icon { font-size: 15px; flex-shrink: 0; }
+  .callout strong { color: var(--cw-navy); }
+  .callout code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--cw-blue-pale);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--cw-blue);
+  }
+
+  .connector {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 4mm 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--cw-blue-wash), var(--cw-blue-pale));
+    border: 1px solid rgba(66,100,255,0.15);
+    font-size: 11.5px;
+    color: var(--text-body);
+    line-height: 1.6;
+  }
+  .connector .conn-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .connector strong { color: var(--cw-navy); }
+  .connector em { color: var(--cw-blue); font-style: normal; font-weight: 600; }
+
+  /* ── Topology nodes ── */
+  .node-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    min-width: 200px;
+    background: var(--bg-card);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .node-box.laptop  { border-color: var(--cw-blue); }
+  .node-box.proxy   { border-color: #16a34a; }
+  .node-box.jump    { border-color: var(--cw-blue-light); }
+  .node-box.bmc     { border-color: var(--cw-navy); }
+
+  .node-icon { font-size: 20px; }
+  .node-info { flex: 1; }
+  .node-label { font-weight: 800; font-size: 12px; color: var(--cw-navy); }
+  .node-sub { font-size: 9.5px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+  .badge {
+    font-size: 8px; font-weight: 800; padding: 3px 8px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .badge-ext  { background: var(--cw-blue-pale); color: var(--cw-blue); }
+  .badge-cw   { background: #f0fdf4; color: #16a34a; }
+  .badge-dc   { background: var(--cw-blue-pale); color: var(--cw-blue-light); }
+  .badge-bmc  { background: #f0f0f8; color: var(--cw-navy); }
+
+  .arrow-seg { display: flex; flex-direction: column; align-items: center; position: relative; padding: 1px 0; }
+  .arrow-line { width: 2px; height: 22px; background: var(--cw-blue); opacity: 0.3; }
+  .arrow-tip { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid var(--cw-blue); }
+  .arrow-label {
+    position: absolute; left: calc(50% + 14px); top: 50%; transform: translateY(-50%);
+    white-space: nowrap; font-size: 9.5px; font-family: 'JetBrains Mono', monospace;
+    color: var(--cw-blue); background: var(--bg); padding: 2px 8px;
+    border-radius: 4px; border: 1px solid var(--border); font-weight: 500;
+  }
+
+  .zone {
+    border: 1.5px dashed rgba(66,100,255,0.25); border-radius: 12px;
+    padding: 12px 14px 10px; position: relative; background: var(--cw-blue-wash);
+  }
+  .zone-label {
+    position: absolute; top: -8px; left: 14px; background: var(--bg);
+    padding: 0 8px; font-size: 8px; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--cw-blue);
+  }
+
+  .bmc-row { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
+  .bmc-mini {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 12px; border: 1.5px solid var(--cw-navy-light); border-radius: 8px;
+    background: var(--bg-card); min-width: 70px;
+  }
+  .bmc-mini-label { font-size: 9px; font-weight: 800; color: var(--cw-navy); }
+  .bmc-mini-sub { font-size: 8px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+  .cap-pill {
+    padding: 5px 12px; border-radius: 20px; background: var(--bg-card);
+    border: 1px solid var(--border); font-size: 10px; color: var(--cw-blue);
+    display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+
+  /* ── Command blocks ── */
+  .cmd-block {
+    background: var(--cw-navy);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.7;
+    color: #c8cbdf;
+    margin: 2mm 0;
+    overflow-x: auto;
+  }
+  .cmd-block .comment { color: #6b6e8a; }
+  .cmd-block .cmd { color: #7ee787; }
+  .cmd-block .flag { color: #f0883e; }
+  .cmd-block .val { color: #79c0ff; }
+
+  /* ── Cards ── */
+  .cmd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 2mm 0; }
+  .cmd-card {
+    padding: 10px 12px; border-radius: 8px; background: var(--bg-card);
+    border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .cmd-card-title {
+    font-size: 11px; font-weight: 800; color: var(--cw-navy);
+    margin-bottom: 4px; display: flex; align-items: center; gap: 5px;
+  }
+  .cmd-card-title .icon { font-size: 14px; }
+  .cmd-card code {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+    color: var(--cw-blue); background: var(--cw-blue-wash);
+    padding: 4px 8px; border-radius: 5px; display: block;
+    margin: 4px 0 2px; line-height: 1.6; white-space: pre-wrap;
+    border: 1px solid rgba(66,100,255,0.1);
+  }
+  .cmd-card .when { font-size: 9.5px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ── Swimlane ── */
+  .lane-head {
+    text-align: center; padding: 6px 4px; border-radius: 6px;
+    font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .lh-you  { background: var(--cw-blue-pale); color: var(--cw-blue); }
+  .lh-tp   { background: #f0fdf4; color: #16a34a; }
+  .lh-jump { background: #eef5ff; color: #3b82f6; }
+  .lh-bmc  { background: #f0f0f8; color: var(--cw-navy); }
+
+  .swim-step {
+    padding: 7px 8px; border-radius: 7px; border-left: 3px solid;
+    margin: 6px 3px; background: var(--bg-card); font-size: 10.5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .swim-step.s-you  { border-color: var(--cw-blue); }
+  .swim-step.s-tp   { border-color: #16a34a; }
+  .swim-step.s-jump { border-color: #3b82f6; }
+  .swim-step.s-bmc  { border-color: var(--cw-navy); }
+
+  .step-tag { font-size: 8px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .st-you  { color: var(--cw-blue); }
+  .st-tp   { color: #16a34a; }
+  .st-jump { color: #3b82f6; }
+  .st-bmc  { color: var(--cw-navy); }
+
+  .step-cmd {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--cw-blue); background: var(--cw-blue-wash);
+    padding: 2px 6px; border-radius: 4px; display: inline-block; margin: 2px 0;
+  }
+  .step-desc { font-size: 10px; color: var(--text-muted); }
+  .step-result {
+    font-size: 9px; font-weight: 700; padding: 2px 7px;
+    border-radius: 4px; display: inline-block; margin-top: 2px;
+  }
+  .sr-ok  { background: #f0fdf4; color: #16a34a; }
+  .sr-ttl { background: #fffbeb; color: #d97706; }
+
+  /* ── Flowchart ── */
+  .flow-row {
+    display: grid; grid-template-columns: 1fr 130px 1fr;
+    align-items: center; gap: 8px; width: 100%; margin: 4px 0;
+  }
+  .flow-row-l { text-align: right; }
+  .flow-row-r { text-align: left; }
+
+  .diamond {
+    width: 130px; height: 46px; background: var(--cw-blue-pale);
+    border: 2px solid var(--cw-blue); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: var(--cw-blue); text-align: center; padding: 0 16px;
+  }
+
+  .fb {
+    padding: 7px 10px; border-radius: 8px; background: var(--bg-card);
+    border: 1.5px solid var(--border); font-size: 10px; display: inline-block;
+    line-height: 1.5; box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .fb-ok   { border-color: #16a34a; background: #f0fdf4; }
+  .fb-warn { border-color: #d97706; background: #fffbeb; }
+  .fb-err  { border-color: #dc2626; background: #fef2f2; }
+  .fb-info { border-color: var(--cw-blue); background: var(--cw-blue-wash); }
+  .fb-title { font-weight: 800; color: var(--cw-navy); margin-bottom: 1px; font-size: 10.5px; }
+  .fb-sub { font-size: 9px; color: var(--text-muted); }
+  .fb code {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--cw-blue); display: block; margin-top: 2px;
+  }
+
+  .branch-labels {
+    display: flex; justify-content: center; gap: 6px;
+    font-size: 8px; font-family: 'JetBrains Mono', monospace; margin: -1px 0 1px;
+  }
+  .bl-no  { color: #dc2626; font-weight: 800; }
+  .bl-yes { color: #16a34a; font-weight: 800; }
+
+  /* ── SEL cards ── */
+  .sel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 2mm 0; }
+  .sel-card {
+    padding: 9px 10px; border-radius: 8px; background: var(--bg-card);
+    border: 1.5px solid var(--border); display: flex; flex-direction: column; gap: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .sel-card.crit { border-color: #dc2626; border-left: 4px solid #dc2626; }
+  .sel-card.high { border-color: #d97706; border-left: 4px solid #d97706; }
+  .sel-card.med  { border-color: #ca8a04; border-left: 4px solid #ca8a04; }
+  .sel-card.low  { border-color: var(--cw-blue); border-left: 4px solid var(--cw-blue); }
+  .sel-card.info { border-color: var(--text-faint); border-left: 4px solid var(--text-faint); }
+
+  .sel-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .sel-event { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 600; color: var(--cw-navy); }
+  .sev {
+    font-size: 7.5px; font-weight: 800; padding: 2px 7px; border-radius: 20px;
+    letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0;
+  }
+  .sev-crit { background: #fef2f2; color: #dc2626; }
+  .sev-high { background: #fffbeb; color: #d97706; }
+  .sev-med  { background: #fefce8; color: #ca8a04; }
+  .sev-low  { background: var(--cw-blue-pale); color: var(--cw-blue); }
+  .sev-info { background: var(--bg-surface); color: var(--text-muted); }
+
+  .sel-meaning { font-size: 10.5px; color: var(--text); font-weight: 500; }
+  .sel-action { font-size: 9.5px; color: var(--text-body); border-top: 1px solid var(--border-light); padding-top: 4px; }
+  .sel-action strong { color: var(--cw-blue); font-weight: 700; }
+
+  .legend { display: flex; gap: 14px; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; color: var(--text-muted); font-weight: 500; }
+  .ldot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Workflow strips ── */
+  .workflow-strip { display: flex; align-items: center; gap: 0; margin: 3mm 0; overflow-x: auto; }
+  .ws-step {
+    padding: 7px 10px; background: var(--bg-card); border: 1px solid var(--border);
+    font-size: 10px; text-align: center; min-width: 80px; flex-shrink: 0;
+  }
+  .ws-step:first-child { border-radius: 8px 0 0 8px; }
+  .ws-step:last-child { border-radius: 0 8px 8px 0; }
+  .ws-step .ws-label { font-weight: 800; color: var(--cw-navy); font-size: 10px; }
+  .ws-step .ws-sub { font-size: 8.5px; color: var(--text-muted); margin-top: 1px; }
+  .ws-arrow { font-size: 12px; color: var(--cw-blue); flex-shrink: 0; margin: 0 -1px; z-index: 1; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CW Logo SVG (reusable) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+  <symbol id="cw-logo" viewBox="0 0 32 32">
+    <rect width="32" height="32" rx="6" fill="#4264ff"/>
+    <path d="M8 16c0-4.4 3.6-8 8-8 2.2 0 4.2.9 5.6 2.3l-2.1 2.1C18.5 11.5 17.3 11 16 11c-2.8 0-5 2.2-5 5s2.2 5 5 5c1.3 0 2.5-.5 3.5-1.4l2.1 2.1C20.2 23.1 18.2 24 16 24c-4.4 0-8-3.6-8-8z" fill="white"/>
+  </symbol>
+</svg>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 1 — THE BIG PICTURE
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left">
+      <svg class="cw-logo"><use href="#cw-logo"/></svg>
+      <span class="page-brand">Teleport BMC Access Reference</span>
+    </div>
+    <span class="page-num">01 / 11</span>
+  </div>
+
+  <h1>The Big Picture</h1>
+  <p class="subtitle">What Teleport is and why you need it to touch bare metal</p>
+
+  <div class="talk">
+    Think of Teleport as <strong>the front door to CW's data center network</strong>. Your laptop sits outside — it can't reach any internal IPs where servers live. Teleport is a <em>zero-trust SSH gateway</em> that authenticates you, then opens a secure tunnel inside. Without it, you can't SSH to anything.
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 0; margin: 3mm 0;">
+    <div class="node-box laptop">
+      <div class="node-icon">💻</div>
+      <div class="node-info">
+        <div class="node-label">Your Laptop</div>
+        <div class="node-sub">tsh CLI + your CW identity</div>
+      </div>
+      <span class="badge badge-ext">External</span>
+    </div>
+    <div class="arrow-seg">
+      <div class="arrow-line"></div>
+      <div class="arrow-tip"></div>
+      <div class="arrow-label">tsh login --proxy=teleport.na.int.coreweave.com</div>
+    </div>
+    <div class="node-box proxy">
+      <div class="node-icon">🔐</div>
+      <div class="node-info">
+        <div class="node-label">Teleport Proxy</div>
+        <div class="node-sub">teleport.na.int.coreweave.com</div>
+      </div>
+      <span class="badge badge-cw">CW Auth Gateway</span>
+    </div>
+    <div class="arrow-seg">
+      <div class="arrow-line"></div>
+      <div class="arrow-tip"></div>
+      <div class="arrow-label">tsh ssh acc@dh1-metal-jump01-us-central-07a</div>
+    </div>
+    <div class="zone" style="width: 440px; align-self: center;">
+      <span class="zone-label">CW Internal — EVI01 / Elk Grove / US-CENTRAL-07A</span>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="node-box jump">
+          <div class="node-icon">🖥️</div>
+          <div class="node-info">
+            <div class="node-label">Jump Host</div>
+            <div class="node-sub">dh1-metal-jump01-us-central-07a</div>
+          </div>
+          <span class="badge badge-dc">Relay</span>
+        </div>
+        <div class="arrow-seg">
+          <div class="arrow-line" style="height: 16px;"></div>
+          <div class="arrow-tip"></div>
+          <div class="arrow-label">ipmitool / wreakit → BMC IPs</div>
+        </div>
+        <div class="bmc-row">
+          <div class="bmc-mini"><div style="font-size:14px;">⚙️</div><div class="bmc-mini-label">Node BMC</div><div class="bmc-mini-sub">10.x.x.1</div></div>
+          <div class="bmc-mini"><div style="font-size:14px;">⚙️</div><div class="bmc-mini-label">Node BMC</div><div class="bmc-mini-sub">10.x.x.2</div></div>
+          <div class="bmc-mini"><div style="font-size:14px;">⚙️</div><div class="bmc-mini-label">Node BMC</div><div class="bmc-mini-sub">10.x.x.3</div></div>
+          <div class="bmc-mini"><div style="font-size:14px;">...</div><div class="bmc-mini-label">All nodes</div><div class="bmc-mini-sub">in this DC</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk">
+    <strong>The jump host is just a relay.</strong> It sits inside the DC network where BMC IPs live. You can't reach those IPs from your laptop — but the jump host can. The chain is always: <em>laptop → Teleport → jump host → BMC</em>.
+  </div>
+
+  <div class="connector">
+    <span class="conn-icon">🔗</span>
+    <span><strong>BMC</strong> = Baseboard Management Controller. A tiny embedded computer <em>on the motherboard</em> of every server. It runs even when the OS is dead. That's why you can power cycle a crashed node — you're talking to the BMC, not Linux.</span>
+  </div>
+
+  <h3>What you unlock from the jump host</h3>
+  <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 2mm;">
+    <div class="cap-pill">🔍 SEL logs</div>
+    <div class="cap-pill">⚡ Power cycle</div>
+    <div class="cap-pill">🖥️ SOL console</div>
+    <div class="cap-pill">🌐 BMC Web UI</div>
+    <div class="cap-pill">🔄 Cold reset</div>
+    <div class="cap-pill">🌡️ Sensors</div>
+    <div class="cap-pill">📋 FRU info</div>
+    <div class="cap-pill">💾 Firmware</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 2 — GETTING CONNECTED
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">02 / 11</span>
+  </div>
+
+  <h1>Getting Connected</h1>
+  <p class="subtitle">The 3 commands between you and any node's BMC</p>
+
+  <div class="talk">
+    There are only <strong>3 commands</strong> between "I need to check a node" and having BMC data on your screen. Here's each one, what it does, and what you should see.
+  </div>
+
+  <h2 style="color: var(--cw-blue);">Step 1 — Authenticate</h2>
+  <div class="cmd-block">
+    <span class="comment"># Log in to Teleport (opens SSO in browser)</span><br>
+    <span class="cmd">tsh login</span> <span class="flag">--proxy=</span><span class="val">teleport.na.int.coreweave.com</span> <span class="val">teleport</span>
+  </div>
+  <div class="talk">
+    This pops open your browser for SSO. Once you authenticate, <code>tsh</code> stores a short-lived certificate. <strong>The cert lasts ~12 hours</strong> — you only do this once per shift.
+  </div>
+  <div class="callout">
+    <span class="callout-icon">💡</span>
+    <span>Check if you're already authenticated: <code>tsh status</code>. Shows your cert expiry. "Not logged in" → run the login command above.</span>
+  </div>
+
+  <h2 style="color: #3b82f6;">Step 2 — Land on the Jump Host</h2>
+  <div class="cmd-block">
+    <span class="comment"># SSH to the jump host at your site (EVI01)</span><br>
+    <span class="cmd">tsh ssh</span> <span class="val">acc@dh1-metal-jump01-us-central-07a</span>
+  </div>
+  <div class="talk">
+    Now you're <em>inside</em> the DC network. The prompt changes — you're on the jump host. Every internal IP (including BMC IPs) is now reachable. The <code>acc</code> user has sudo access.
+  </div>
+  <div class="callout">
+    <span class="callout-icon">📍</span>
+    <span><strong>Other sites have different jump hosts.</strong> Pattern: <code>metal-jump01-{region}</code>. Find yours: <code>tsh ls | grep metal-jump</code></span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 2mm 0;">
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); font-size: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+      <span style="color: var(--cw-blue); font-weight: 800;">EVI01</span>
+      <span style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 9px;"> dh1-metal-jump01-us-central-07a</span>
+    </div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); font-size: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+      <span style="color: var(--cw-blue); font-weight: 800;">US-EAST</span>
+      <span style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 9px;"> metal-jump01-us-east-04a</span>
+    </div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); font-size: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+      <span style="color: var(--cw-blue); font-weight: 800;">RNO2</span>
+      <span style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 9px;"> metal-jump01-rno2</span>
+    </div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); font-size: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+      <span style="color: var(--cw-blue); font-weight: 800;">RDU1</span>
+      <span style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 9px;"> metal-jump01-rdu1</span>
+    </div>
+  </div>
+
+  <h2 style="color: var(--cw-navy);">Step 3 — Talk to the BMC</h2>
+  <div class="cmd-block">
+    <span class="comment"># Option A: wreakit (happy path — handles creds for you)</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">&lt;node-name&gt;</span> <span class="val">"sel list"</span><br><br>
+    <span class="comment"># Option B: raw ipmitool (when wreakit fails or you need full control)</span><br>
+    <span class="cmd">ipmitool</span> <span class="flag">-I lanplus -H</span> <span class="val">$BMC_IP</span> <span class="flag">-U</span> <span class="val">$BMC_USER</span> <span class="flag">-P</span> <span class="val">"$BMC_PASS"</span> <span class="val">sel list</span>
+  </div>
+  <div class="talk">
+    <strong>wreakit is your friend</strong> — it wraps ipmitool and handles credentials automatically. Use it first. If it fails (agent down, node not in inventory), fall back to raw ipmitool. Get the BMC IP from <em>NetBox</em>.
+  </div>
+
+  <div class="connector">
+    <span class="conn-icon">🔗</span>
+    <span><strong>Where do BMC IPs come from?</strong> NetBox is CW's source of truth for device info. Look up any node to find its BMC/IPMI interface IP.</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 3 — AUTH FLOW SWIMLANE
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">03 / 11</span>
+  </div>
+
+  <h1>How the Session Flows</h1>
+  <p class="subtitle">What each system does at each step</p>
+
+  <div class="talk">
+    Every Teleport session is <strong>audited and logged</strong>. CW records your session for 12 months — every command you type. This protects you too if something goes wrong on a node.
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column;">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-bottom: 3px;">
+      <div class="lane-head lh-you">You (Laptop)</div>
+      <div class="lane-head lh-tp">Teleport Proxy</div>
+      <div class="lane-head lh-jump">Jump Host</div>
+      <div class="lane-head lh-bmc">Node BMC</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; flex: 1;">
+      <div style="border-right: 1px solid var(--border); padding: 4px;">
+        <div class="swim-step s-you"><div class="step-tag st-you">1. Login</div><div class="step-cmd">tsh login --proxy=...</div><div class="step-desc">Opens browser for SSO</div><div class="step-result sr-ttl">Cert issued (12h)</div></div>
+        <div style="height: 14px;"></div>
+        <div class="swim-step s-you"><div class="step-tag st-you">2. Connect</div><div class="step-cmd">tsh ssh acc@jump01</div><div class="step-desc">Open tunnel to jump host</div></div>
+        <div style="height: 30px;"></div>
+        <div class="swim-step s-you"><div class="step-tag st-you">4. Command</div><div class="step-cmd">ipmitool ... sel list</div><div class="step-desc">Run from jump host shell</div></div>
+        <div style="height: 14px;"></div>
+        <div class="swim-step s-you"><div class="step-tag st-you">6. Read</div><div class="step-desc">SEL data on your screen</div><div class="step-result sr-ok">Diagnose the issue</div></div>
+      </div>
+      <div style="border-right: 1px solid var(--border); padding: 4px;">
+        <div class="swim-step s-tp"><div class="step-tag st-tp">Validates</div><div class="step-desc">Checks CW SSO identity</div><div class="step-result sr-ok">Short-lived cert</div></div>
+        <div style="height: 10px;"></div>
+        <div class="swim-step s-tp"><div class="step-tag st-tp">Proxies</div><div class="step-desc">Routes SSH through encrypted tunnel</div><div class="step-result sr-ok">Session recorded</div></div>
+        <div style="height: 60px;"></div>
+        <div class="swim-step s-tp"><div class="step-tag st-tp">Logs</div><div class="step-desc">Records every command</div><div class="step-result sr-ttl">Retained 12 months</div></div>
+      </div>
+      <div style="border-right: 1px solid var(--border); padding: 4px;">
+        <div style="height: 70px;"></div>
+        <div class="swim-step s-jump"><div class="step-tag st-jump">3. Ready</div><div class="step-desc">You land here. DC network is now reachable.</div><div class="step-result" style="background:#eef5ff;color:#3b82f6;">BMC IPs accessible</div></div>
+        <div style="height: 16px;"></div>
+        <div class="swim-step s-jump"><div class="step-tag st-jump">Relays</div><div class="step-desc">Sends ipmitool packets to BMC via internal LAN</div></div>
+      </div>
+      <div style="padding: 4px;">
+        <div style="height: 130px;"></div>
+        <div class="swim-step s-bmc"><div class="step-tag st-bmc">5. Executes</div><div class="step-desc">BMC receives command, queries hardware</div></div>
+        <div style="height: 8px;"></div>
+        <div class="swim-step s-bmc"><div class="step-tag st-bmc">Returns</div><div class="step-cmd">SEL / sensor / power data</div><div class="step-result sr-ok">Back to your screen</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">⚠️</span>
+    <span><strong>BMC Web UI fallback:</strong> Port-forward through the jump host: <code>tsh ssh -L "4443:&lt;bmc-ip&gt;:443" acc@jump01</code> → open <code>https://localhost:4443</code></span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 4 — DCT COMMAND REFERENCE
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">04 / 11</span>
+  </div>
+
+  <h1>DCT Command Reference</h1>
+  <p class="subtitle">Every ipmitool command you'll actually use on shift</p>
+
+  <div class="talk">
+    All of these run <strong>from the jump host</strong>. Replace <code>$BMC</code> with <code>ipmitool -I lanplus -H $IP -U $USER -P "$PASS"</code>. Or use <code>wreakit bmc &lt;node&gt; "command"</code>.
+  </div>
+
+  <div class="cmd-grid">
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">🔍</span> SEL List (Event Log)</div><code>$BMC sel list
+$BMC sel list last 20
+$BMC sel clear</code><div class="when">First thing on any sick node. Shows hardware events.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">⚡</span> Power Control</div><code>$BMC chassis power status
+$BMC chassis power cycle
+$BMC chassis power off
+$BMC chassis power on</code><div class="when">Node unresponsive, needs hard reboot.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">🌡️</span> Sensor Readings</div><code>$BMC sdr list
+$BMC sdr type Temperature
+$BMC sdr type Fan
+$BMC sdr type Voltage</code><div class="when">Thermal alerts, fan failures, power instability.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">🔄</span> BMC / MC Reset</div><code>$BMC mc reset cold
+$BMC mc reset warm
+$BMC mc info</code><div class="when">BMC itself hung or returning garbage.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">📋</span> FRU Info (Part Numbers)</div><code>$BMC fru list
+$BMC fru print 0</code><div class="when">RMA ticket — need serial numbers, model, manufacturer.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">🖥️</span> SOL Console (Serial)</div><code>$BMC sol activate
+$BMC sol deactivate</code><div class="when">Boot output, BIOS errors, kernel panics live. Exit: ~.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">💡</span> Chassis LED / Identify</div><code>$BMC chassis identify 30
+$BMC chassis identify force</code><div class="when">Physical locate — blinks chassis LED.</div></div>
+    <div class="cmd-card"><div class="cmd-card-title"><span class="icon">🔌</span> Boot Device Override</div><code>$BMC chassis bootdev pxe
+$BMC chassis bootdev disk
+$BMC chassis bootdev bios</code><div class="when">Force PXE reinstall, boot to BIOS, restore disk boot.</div></div>
+  </div>
+
+  <div class="connector">
+    <span class="conn-icon">🔗</span>
+    <span><strong>wreakit wraps all of these.</strong> <code>wreakit bmc node123 "sel list"</code> = same as raw ipmitool, but handles creds automatically.</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 5 — DECISION FLOWCHART
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">05 / 11</span>
+  </div>
+
+  <h1>Troubleshooting Decision Tree</h1>
+  <p class="subtitle">When things break at any step in the chain</p>
+
+  <div class="talk">
+    The chain is laptop → Teleport → jump host → BMC. <strong>If any link breaks, you get stuck.</strong> Here's how to diagnose which link failed.
+  </div>
+
+  <div class="flow-row"><div class="flow-row-l"><div class="fb fb-err"><div class="fb-title">Re-authenticate</div><div class="fb-sub">"expired certificate"</div><code>tsh login --proxy=...</code></div></div><div><div class="diamond">tsh cert valid?</div></div><div class="flow-row-r"><div class="fb fb-ok"><div class="fb-title">Valid cert</div><div class="fb-sub">Check with:</div><code>tsh status</code></div></div></div>
+  <div class="branch-labels"><span class="bl-no">✗ NO</span><span style="flex:0 0 120px;text-align:center;color:var(--border);">────────────</span><span class="bl-yes">✓ YES ↓</span></div>
+
+  <div class="flow-row"><div class="flow-row-l"><div class="fb fb-err"><div class="fb-title">Jump host agent offline</div><div class="fb-sub">"direct dialing not supported"</div><code>Check #teleport / on-call</code></div></div><div><div class="diamond">Jump host reachable?</div></div><div class="flow-row-r"><div class="fb fb-ok"><div class="fb-title">You're on the jump host</div><div class="fb-sub">Prompt: acc@dh1-...</div><code>hostname</code></div></div></div>
+  <div class="branch-labels"><span class="bl-no">✗ NO</span><span style="flex:0 0 120px;text-align:center;color:var(--border);">────────────</span><span class="bl-yes">✓ YES ↓</span></div>
+
+  <div class="flow-row"><div class="flow-row-l"><div class="fb fb-warn"><div class="fb-title">BMC unreachable</div><div class="fb-sub">Timeout / wrong IP</div><code>Verify IP in NetBox<br>ping $BMC_IP</code></div></div><div><div class="diamond">ipmitool connects?</div></div><div class="flow-row-r"><div class="fb fb-ok"><div class="fb-title">BMC responding</div><div class="fb-sub">Data returned</div><code>Run your commands</code></div></div></div>
+  <div class="branch-labels"><span class="bl-no">✗ NO</span><span style="flex:0 0 120px;text-align:center;color:var(--border);">────────────</span><span class="bl-yes">✓ YES ↓</span></div>
+
+  <div class="flow-row"><div class="flow-row-l"><div class="fb fb-info"><div class="fb-title">ipmitool (raw)</div><div class="fb-sub">Full control, manage creds</div><code>ipmitool -I lanplus -H $IP ...</code></div></div><div><div class="diamond">wreakit or ipmitool?</div></div><div class="flow-row-r"><div class="fb fb-ok"><div class="fb-title">wreakit (happy path)</div><div class="fb-sub">Handles creds, knows inventory</div><code>wreakit bmc &lt;node&gt; "sel list"</code></div></div></div>
+
+  <div class="talk" style="margin-top: 5mm;">
+    <strong>90% of the time, wreakit just works.</strong> Raw ipmitool is your escape hatch when a node isn't in inventory, the agent is down, or you need unusual commands.
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">💡</span>
+    <span><strong>Pro tip:</strong> If ipmitool gives "Unable to establish RMCP+ session" — IPMI-over-LAN may be disabled, or the password is wrong. Try <code>mc info</code> first (lightest command).</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 6 — COMMON DCT WORKFLOWS
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">06 / 11</span>
+  </div>
+
+  <h1>Common DCT Workflows</h1>
+  <p class="subtitle">Real scenarios you'll hit — the full command sequence</p>
+
+  <h2 style="color: #dc2626;">Scenario: Node is down, customer ticket filed</h2>
+  <div class="workflow-strip">
+    <div class="ws-step"><div class="ws-label">1. Ticket</div><div class="ws-sub">Jira / Slack</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">2. Find node</div><div class="ws-sub">NetBox</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">3. SSH in</div><div class="ws-sub">tsh → jump</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">4. SEL list</div><div class="ws-sub">Check events</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">5. Power cycle</div><div class="ws-sub">If safe</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">6. Verify</div><div class="ws-sub">power on</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">7. Update</div><div class="ws-sub">ticket</div></div>
+  </div>
+  <div class="cmd-block">
+    <span class="cmd">tsh ssh</span> <span class="val">acc@dh1-metal-jump01-us-central-07a</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"sel list"</span>           <span class="comment"># what happened?</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis power status"</span>  <span class="comment"># is it on?</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis power cycle"</span>   <span class="comment"># bounce it</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis power status"</span>  <span class="comment"># confirm</span>
+  </div>
+
+  <h2 style="color: #d97706;">Scenario: Thermal alert — node overheating</h2>
+  <div class="workflow-strip">
+    <div class="ws-step"><div class="ws-label">1. Alert</div><div class="ws-sub">Grafana</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">2. Sensors</div><div class="ws-sub">Temp check</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">3. Fans</div><div class="ws-sub">RPM check</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">4. SEL</div><div class="ws-sub">History</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">5. Decide</div><div class="ws-sub">Physical?</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">6. Escalate</div><div class="ws-sub">If HW</div></div>
+  </div>
+  <div class="cmd-block">
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"sdr type Temperature"</span>  <span class="comment"># current temps</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"sdr type Fan"</span>          <span class="comment"># fan RPMs</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"sel list last 10"</span>      <span class="comment"># recent events</span>
+  </div>
+
+  <h2 style="color: var(--cw-navy);">Scenario: Need serial numbers for RMA</h2>
+  <div class="workflow-strip">
+    <div class="ws-step"><div class="ws-label">1. FRU</div><div class="ws-sub">Serials</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">2. mc info</div><div class="ws-sub">FW ver</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">3. Locate</div><div class="ws-sub">Blink LED</div></div><div class="ws-arrow">→</div>
+    <div class="ws-step"><div class="ws-label">4. File RMA</div><div class="ws-sub">With data</div></div>
+  </div>
+  <div class="cmd-block">
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"fru print 0"</span>           <span class="comment"># serial, model</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"mc info"</span>               <span class="comment"># FW version</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis identify 120"</span>  <span class="comment"># blink 2 min</span>
+  </div>
+
+  <div class="connector">
+    <span class="conn-icon">💡</span>
+    <span><strong>Pattern:</strong> Every DCT workflow: <em>identify node → SSH to jump → gather data → take action → verify → update ticket</em>.</span>
+  </div>
+
+  <h2 style="color: #3b82f6;">Scenario: Boot failure — stuck in POST</h2>
+  <div class="cmd-block">
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"sol activate"</span>          <span class="comment"># see boot output live (exit: ~.)</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis bootdev pxe"</span>   <span class="comment"># force PXE next boot</span><br>
+    <span class="cmd">wreakit bmc</span> <span class="val">node-xyz</span> <span class="val">"chassis power cycle"</span>   <span class="comment"># reboot into PXE</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 7 — SEL DECODER
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">07 / 11</span>
+  </div>
+
+  <h1>SEL Event Decoder</h1>
+  <p class="subtitle">What the System Event Log is telling you</p>
+
+  <div class="talk">
+    The SEL is the <strong>black box recorder</strong> for server hardware. Every thermal spike, power fault, and memory error gets logged with a timestamp. This is the <em>first place you look</em> on a sick node.
+  </div>
+
+  <div class="sel-grid">
+    <div class="sel-card crit"><div class="sel-head"><div class="sel-event">Processor | IERR</div><div class="sev sev-crit">Critical</div></div><div class="sel-meaning">CPU internal error — hardware fault</div><div class="sel-action"><strong>Action:</strong> Cold reset. If repeats → RMA.</div></div>
+    <div class="sel-card crit"><div class="sel-head"><div class="sel-event">Power Supply | Failure</div><div class="sev sev-crit">Critical</div></div><div class="sel-meaning">PSU dead — node on single supply or down</div><div class="sel-action"><strong>Action:</strong> Physical swap. Non-redundant → urgent.</div></div>
+    <div class="sel-card crit"><div class="sel-head"><div class="sel-event">Memory | Uncorrectable ECC</div><div class="sev sev-crit">Critical</div></div><div class="sel-meaning">RAM error couldn't be corrected — data corruption</div><div class="sel-action"><strong>Action:</strong> DIMM replacement. Pull slot info for RMA.</div></div>
+    <div class="sel-card high"><div class="sel-head"><div class="sel-event">Temperature | Upper Critical</div><div class="sev sev-high">High</div></div><div class="sel-meaning">Emergency thermal threshold hit</div><div class="sel-action"><strong>Action:</strong> Check fans + ambient. Physical inspect if persistent.</div></div>
+    <div class="sel-card high"><div class="sel-head"><div class="sel-event">OS Stop / Shutdown</div><div class="sev sev-high">High</div></div><div class="sel-meaning">Kernel panic, OOM, or watchdog timeout</div><div class="sel-action"><strong>Action:</strong> SOL for OS logs. Check dmesg. Note if recurring.</div></div>
+    <div class="sel-card med"><div class="sel-head"><div class="sel-event">Memory | Correctable ECC</div><div class="sev sev-med">Medium</div></div><div class="sel-meaning">RAM bit flip corrected — benign if rare</div><div class="sel-action"><strong>Action:</strong> Log count. Rate increases → schedule DIMM swap.</div></div>
+    <div class="sel-card med"><div class="sel-head"><div class="sel-event">Fan | Lower Critical</div><div class="sev sev-med">Medium</div></div><div class="sel-meaning">Fan RPM below safe threshold</div><div class="sel-action"><strong>Action:</strong> Identify slot. Urgent if temps follow.</div></div>
+    <div class="sel-card low"><div class="sel-head"><div class="sel-event">System Boot | Initiated</div><div class="sev sev-low">Info</div></div><div class="sel-meaning">Node powered on or rebooted</div><div class="sel-action"><strong>Action:</strong> Confirm expected. Unexpected → check prior events.</div></div>
+    <div class="sel-card low"><div class="sel-head"><div class="sel-event">Chassis | Intrusion</div><div class="sev sev-info">Info</div></div><div class="sel-meaning">Physical chassis opened</div><div class="sel-action"><strong>Action:</strong> Match against work orders.</div></div>
+    <div class="sel-card low"><div class="sel-head"><div class="sel-event">Drive Slot | Presence</div><div class="sev sev-info">Info</div></div><div class="sel-meaning">Drive inserted or removed</div><div class="sel-action"><strong>Action:</strong> Correlate with maintenance.</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="ldot" style="background:#dc2626;"></div>Critical — act now</div>
+    <div class="legend-item"><div class="ldot" style="background:#d97706;"></div>High — same session</div>
+    <div class="legend-item"><div class="ldot" style="background:#ca8a04;"></div>Medium — monitor</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--cw-blue);"></div>Info — log & verify</div>
+  </div>
+
+  <div class="talk" style="margin-top: 3mm;">
+    <strong>Reading SEL is pattern recognition.</strong> "Fan Lower Critical → Temperature Upper Critical → OS Stop" = fan died → node overheated → kernel panicked. The events tell the story in order.
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 8 — TSH COMMAND CHEAT SHEET
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">08 / 11</span>
+  </div>
+
+  <h1>tsh Command Cheat Sheet</h1>
+  <p class="subtitle">Everything the Teleport CLI can do</p>
+
+  <div class="talk">
+    <strong>Teleport isn't just SSH.</strong> It handles SSH, Kubernetes, web apps, databases, and cloud APIs — all with short-lived certs and full audit logging. <code>tsh</code> is your entry point.
+  </div>
+
+  <div class="cmd-grid">
+    <div class="cmd-card" style="border-left: 3px solid #16a34a;"><div class="cmd-card-title"><span class="icon">🔐</span> Auth & Session</div><code>tsh login --proxy=teleport.na.int.coreweave.com teleport
+tsh logout
+tsh status
+tsh env
+tsh config</code><div class="when">Start of shift: login. End: logout. Check: status.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid var(--cw-blue);"><div class="cmd-card-title"><span class="icon">🖥️</span> SSH & File Transfer</div><code>tsh ssh acc@&lt;hostname&gt;
+tsh ssh acc@&lt;host&gt; &lt;command&gt;
+tsh ls
+tsh ls | grep metal-jump
+tsh scp file.sh acc@host:/tmp/</code><div class="when">Daily use. tsh ls shows what your roles let you reach.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid #0891b2;"><div class="cmd-card-title"><span class="icon">☸️</span> Kubernetes</div><code>tsh kube ls
+tsh kube login us-central-07a-mgmt
+tsh kubectl get nodes
+tsh kubectl get pods -A</code><div class="when">Your cluster: us-central-07a-mgmt. K8s enabled.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid #d97706;"><div class="cmd-card-title"><span class="icon">🌐</span> Web Applications</div><code>tsh apps ls
+tsh apps login grafana
+tsh proxy app grafana -p 8080</code><div class="when">Grafana, internal tools — anything behind Teleport.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid #7c3aed;"><div class="cmd-card-title"><span class="icon">🗄️</span> Databases</div><code>tsh db ls
+tsh db login --db-user=rpatino mydb
+tsh db connect --db-user=admin mydb
+tsh proxy db mydb -p 5432</code><div class="when">PostgreSQL, MySQL, MongoDB, Redis. No passwords needed.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid #dc2626;"><div class="cmd-card-title"><span class="icon">🎫</span> Access Requests</div><code>tsh request create --roles=&lt;role&gt; \
+  --reason="BMC access for CW-1234"
+tsh request ls
+tsh request show &lt;id&gt;</code><div class="when">Auto-triggered on "access denied". Submit reason, await approval.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid #ca8a04;"><div class="cmd-card-title"><span class="icon">📼</span> Session Recordings</div><code>tsh recordings ls
+tsh play &lt;session-id&gt;
+tsh play --skip-idle-time &lt;id&gt;</code><div class="when">Review support sessions. All sessions recorded.</div></div>
+    <div class="cmd-card" style="border-left: 3px solid var(--text-muted);"><div class="cmd-card-title"><span class="icon">🔧</span> Diagnostics & Proxy</div><code>tsh bench --duration=10s acc@host
+tsh proxy ssh acc@host
+tsh proxy app &lt;app&gt; -p &lt;port&gt;
+tsh proxy kube &lt;cluster&gt; -p &lt;port&gt;</code><div class="when">Benchmarking, local proxying, debug connectivity.</div></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 9 — YOUR PROFILE + JUMP HOSTS
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">09 / 11</span>
+  </div>
+
+  <h1>Your Teleport Profile & Jump Hosts</h1>
+  <p class="subtitle">What you have access to right now</p>
+
+  <div class="talk">
+    This is <em>your actual Teleport profile</em> as of April 2026. Your roles determine what you can SSH to, which K8s clusters you see, and which apps are available. Outside your roles → Teleport auto-triggers an <strong>access request</strong>.
+  </div>
+
+  <div style="background: var(--bg-card); border: 2px solid var(--cw-blue); border-radius: 10px; padding: 14px 16px; margin: 3mm 0; box-shadow: 0 2px 8px rgba(66,100,255,0.08);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <div style="font-size: 15px; font-weight: 900; color: var(--cw-navy);">rpatino@coreweave.com</div>
+      <div class="badge badge-cw" style="font-size: 9px;">Authenticated</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 100px 1fr; gap: 4px 10px; font-size: 11px;">
+      <div style="color: var(--text-muted); font-weight: 700;">Proxy</div><div style="color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 10px;">teleport.na.int.coreweave.com:443</div>
+      <div style="color: var(--text-muted); font-weight: 700;">Cluster</div><div style="color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 10px;">teleport</div>
+      <div style="color: var(--text-muted); font-weight: 700;">Login</div><div style="color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 10px;">acc</div>
+      <div style="color: var(--text-muted); font-weight: 700;">K8s Cluster</div><div style="color: #0891b2; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;">us-central-07a-mgmt</div>
+      <div style="color: var(--text-muted); font-weight: 700;">Cert TTL</div><div style="color: #d97706; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;">12h0m0s</div>
+    </div>
+  </div>
+
+  <h2>Your Roles</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 2mm 0;">
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--cw-blue);"><div style="font-size: 10px; font-weight: 700; color: var(--cw-blue); font-family: 'JetBrains Mono', monospace;">bmc-app-base-access</div><div style="font-size: 9.5px; color: var(--text-muted);">BMC application access</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--cw-blue);"><div style="font-size: 10px; font-weight: 700; color: var(--cw-blue); font-family: 'JetBrains Mono', monospace;">dpubmc-app-base-access</div><div style="font-size: 9.5px; color: var(--text-muted);">DPU BMC app access</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #3b82f6;"><div style="font-size: 10px; font-weight: 700; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">nodes-ssh-base</div><div style="font-size: 9.5px; color: var(--text-muted);">SSH to nodes — baseline</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #3b82f6;"><div style="font-size: 10px; font-weight: 700; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">nodes-ssh-viewer</div><div style="font-size: 9.5px; color: var(--text-muted);">SSH viewer — read-only</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #16a34a;"><div style="font-size: 10px; font-weight: 700; color: #16a34a; font-family: 'JetBrains Mono', monospace;">infra-base</div><div style="font-size: 9.5px; color: var(--text-muted);">Infrastructure baseline</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #16a34a;"><div style="font-size: 10px; font-weight: 700; color: #16a34a; font-family: 'JetBrains Mono', monospace;">humans</div><div style="font-size: 9.5px; color: var(--text-muted);">Standard human user</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #d97706;"><div style="font-size: 10px; font-weight: 700; color: #d97706; font-family: 'JetBrains Mono', monospace;">bmnmaintenance-read-*</div><div style="font-size: 9.5px; color: var(--text-muted);">BM node maintenance — read</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #d97706;"><div style="font-size: 10px; font-weight: 700; color: #d97706; font-family: 'JetBrains Mono', monospace;">nodemaintenance-read-*</div><div style="font-size: 9.5px; color: var(--text-muted);">Node maintenance viewer</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #ca8a04;"><div style="font-size: 10px; font-weight: 700; color: #ca8a04; font-family: 'JetBrains Mono', monospace;">rack-read-base-access</div><div style="font-size: 9.5px; color: var(--text-muted);">Rack info viewer</div></div>
+    <div style="padding: 6px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid #ca8a04;"><div style="font-size: 10px; font-weight: 700; color: #ca8a04; font-family: 'JetBrains Mono', monospace;">deviceslot-read-*</div><div style="font-size: 9.5px; color: var(--text-muted);">Device slot info viewer</div></div>
+  </div>
+
+  <h2>Jump Host Directory</h2>
+  <div style="margin: 2mm 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+    <div style="display: grid; grid-template-columns: 90px 120px 1fr; font-size: 10.5px;">
+      <div style="padding: 6px 10px; background: var(--cw-blue); font-weight: 800; color: white;">Site</div>
+      <div style="padding: 6px 10px; background: var(--cw-blue); font-weight: 800; color: white;">Region</div>
+      <div style="padding: 6px 10px; background: var(--cw-blue); font-weight: 800; color: white;">Jump Host</div>
+      <div style="padding: 6px 10px; background: var(--cw-blue-wash); color: var(--cw-blue); font-weight: 800; border-bottom: 1px solid var(--border);">EVI01 ★</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); color: var(--text-body); border-bottom: 1px solid var(--border);">us-central-07a</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cw-blue); border-bottom: 1px solid var(--border);">dh1-metal-jump01-us-central-07a</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-weight: 700; border-bottom: 1px solid var(--border);">US-EAST</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); color: var(--text-body); border-bottom: 1px solid var(--border);">us-east-04a</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cw-blue); border-bottom: 1px solid var(--border);">metal-jump01-us-east-04a</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-weight: 700; border-bottom: 1px solid var(--border);">RNO2</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); color: var(--text-body); border-bottom: 1px solid var(--border);">rno2</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cw-blue); border-bottom: 1px solid var(--border);">metal-jump01-rno2</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-weight: 700; border-bottom: 1px solid var(--border);">RDU1</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); color: var(--text-body); border-bottom: 1px solid var(--border);">rdu1</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cw-blue); border-bottom: 1px solid var(--border);">metal-jump01-rdu1</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-weight: 700;">US-WEST</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); color: var(--text-body);">us-west-04a</div>
+      <div style="padding: 6px 10px; background: var(--bg-card); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cw-blue);">metal-jump01-us-west-04a</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="callout-icon">⚠️</span>
+    <span><strong>Access denied?</strong> Your roles may not include the jump host. Teleport will prompt for a reason and auto-request. An approver grants 8h access. Ask your lead which role gives persistent SSH.</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 10 — ONE-LINER CHEAT SHEET
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">10 / 11</span>
+  </div>
+
+  <h1>One-Liner Cheat Sheet</h1>
+  <p class="subtitle">Copy-paste commands — simple daily use to advanced power moves</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+    <div>
+      <h2 style="color: #16a34a; margin-top: 0;">Simple — Daily Use</h2>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Am I logged in?</div><code>tsh status</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">What can I SSH to?</div><code>tsh ls</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Connect to my jump host</div><code>tsh ssh acc@dh1-metal-jump01-us-central-07a</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Check hardware events</div><code>wreakit bmc &lt;node&gt; "sel list"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Is the node on?</div><code>wreakit bmc &lt;node&gt; "chassis power status"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Check temperatures</div><code>wreakit bmc &lt;node&gt; "sdr type Temperature"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Blink chassis LED</div><code>wreakit bmc &lt;node&gt; "chassis identify 30"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Power cycle stuck node</div><code>wreakit bmc &lt;node&gt; "chassis power cycle"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Get serial for RMA</div><code>wreakit bmc &lt;node&gt; "fru print 0"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">List K8s nodes</div><code>tsh kube login us-central-07a-mgmt
+kubectl get nodes</code></div>
+    </div>
+    <div>
+      <h2 style="color: var(--cw-blue); margin-top: 0;">Advanced — Power Moves</h2>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Port-forward BMC Web UI</div><code>tsh ssh -L "4443:&lt;bmc-ip&gt;:443" \
+  acc@dh1-metal-jump01-us-central-07a
+# open https://localhost:4443</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Find jump hosts at any site</div><code>tsh ls | grep metal-jump | grep &lt;region&gt;</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Extended SEL (more detail)</div><code>ipmitool -I lanplus -H $IP \
+  -U $USER -P "$PASS" sel elist</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Filter SEL for errors only</div><code>ipmitool ... sel list | \
+  grep -i "critical\|error\|fail"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Batch power check (20 nodes)</div><code>for ip in 10.0.0.{1..20}; do
+  echo -n "$ip: "
+  ipmitool -H $ip ... power status
+done</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Force PXE boot (EFI)</div><code>ipmitool ... chassis bootdev pxe \
+  options=efiboot</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Copy script to jump host</div><code>tsh scp debug.sh \
+  acc@dh1-metal-jump01-us-central-07a:/tmp/</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Request elevated access</div><code>tsh request create --roles=nodes-ssh-admin \
+  --reason="Ticket CW-1234: node debug"</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Proxy Grafana locally</div><code>tsh apps login grafana
+tsh proxy app grafana -p 8080</code></div>
+      <div class="cmd-card" style="margin-bottom: 4px;"><div style="font-size: 10.5px; font-weight: 800; color: var(--cw-navy);">Replay a session</div><code>tsh recordings ls
+tsh play --skip-idle-time &lt;session-id&gt;</code></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 11 — TELEPORT BEYOND SSH
+═══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="page-header">
+    <div class="page-header-left"><svg class="cw-logo"><use href="#cw-logo"/></svg><span class="page-brand">Teleport BMC Access Reference</span></div>
+    <span class="page-num">11 / 11</span>
+  </div>
+
+  <h1>Teleport: The Full Picture</h1>
+  <p class="subtitle">SSH is just the beginning — everything Teleport connects you to</p>
+
+  <div class="talk">
+    Most DCTs only use Teleport for SSH. But Teleport is a <strong>unified access plane</strong> — Kubernetes, web apps, databases, cloud APIs. You don't need all of this today, but <em>knowing it exists is part of the engineer path</em>.
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; margin: 4mm 0;">
+    <div style="padding: 12px 32px; border-radius: 10px; background: linear-gradient(135deg, var(--cw-blue), var(--cw-blue-light)); font-size: 15px; font-weight: 900; color: white; text-align: center; box-shadow: 0 4px 16px rgba(66,100,255,0.25);">
+      TELEPORT PROXY<br>
+      <span style="font-size: 9px; font-weight: 500; opacity: 0.8;">teleport.na.int.coreweave.com</span>
+    </div>
+    <div style="width: 2px; height: 12px; background: var(--cw-blue); opacity: 0.3;"></div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%;">
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid var(--cw-blue); text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">🖥️</div>
+        <div style="font-size: 12px; font-weight: 900; color: var(--cw-blue);">SSH Nodes</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">Jump hosts, bare metal, VMs</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: var(--cw-blue-pale); color: var(--cw-blue); font-size: 8px; font-weight: 800; display: inline-block;">YOU USE THIS</div>
+      </div>
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid #0891b2; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">☸️</div>
+        <div style="font-size: 12px; font-weight: 900; color: #0891b2;">Kubernetes</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">CKS clusters, pods, nodes</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: #ecfeff; color: #0891b2; font-size: 8px; font-weight: 800; display: inline-block;">ENABLED FOR YOU</div>
+      </div>
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid #d97706; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">🌐</div>
+        <div style="font-size: 12px; font-weight: 900; color: #d97706;">Web Apps</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">Grafana, internal tools</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: #fffbeb; color: #d97706; font-size: 8px; font-weight: 800; display: inline-block;">tsh apps ls</div>
+      </div>
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid #7c3aed; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">🗄️</div>
+        <div style="font-size: 12px; font-weight: 900; color: #7c3aed;">Databases</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">PostgreSQL, MySQL, Redis</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: #f5f3ff; color: #7c3aed; font-size: 8px; font-weight: 800; display: inline-block;">tsh db ls</div>
+      </div>
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid #ca8a04; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">☁️</div>
+        <div style="font-size: 12px; font-weight: 900; color: #ca8a04;">Cloud APIs</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">AWS, Azure, GCP proxy</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: #fefce8; color: #ca8a04; font-size: 8px; font-weight: 800; display: inline-block;">ENGINEER LEVEL</div>
+      </div>
+      <div style="padding: 12px; border-radius: 8px; background: var(--bg-card); border: 1.5px solid #dc2626; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size: 22px; margin-bottom: 4px;">🎫</div>
+        <div style="font-size: 12px; font-weight: 900; color: #dc2626;">Access Requests</div>
+        <div style="font-size: 9.5px; color: var(--text-muted); margin-top: 4px;">Just-in-time elevation</div>
+        <div style="margin-top: 6px; padding: 3px 8px; border-radius: 12px; background: #fef2f2; color: #dc2626; font-size: 8px; font-weight: 800; display: inline-block;">AUTO ON DENY</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk">
+    <strong>The access denied you hit?</strong> That's Teleport doing its job. Your <em>nodes-ssh-base</em> role doesn't include the jump host by default. The system auto-created a request. An approver grants 8h access. <strong>This is zero-trust working as designed.</strong>
+  </div>
+
+  <div style="margin-top: 4mm; padding: 12px 16px; border-radius: 10px; background: var(--bg-card); border: 1.5px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+    <h3 style="color: var(--cw-blue); margin: 0 0 8px 0;">Why Teleport works this way</h3>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 10.5px;">
+      <div style="display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--cw-blue); font-weight: 900; flex-shrink: 0;">01</span><span style="color: var(--text-body);"><strong style="color: var(--cw-navy);">No long-lived keys.</strong> Certs expire in 12h. Nothing to rotate or leak.</span></div>
+      <div style="display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--cw-blue); font-weight: 900; flex-shrink: 0;">02</span><span style="color: var(--text-body);"><strong style="color: var(--cw-navy);">Everything audited.</strong> Every SSH command, K8s call, DB query — 12 months.</span></div>
+      <div style="display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--cw-blue); font-weight: 900; flex-shrink: 0;">03</span><span style="color: var(--text-body);"><strong style="color: var(--cw-navy);">Least privilege.</strong> Only access what your roles allow. Need more? Request with a reason.</span></div>
+      <div style="display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--cw-blue); font-weight: 900; flex-shrink: 0;">04</span><span style="color: var(--text-body);"><strong style="color: var(--cw-navy);">Identity-based.</strong> Access tied to your CW SSO, not IPs or VPNs.</span></div>
+    </div>
+  </div>
+
+  <div class="connector" style="margin-top: 4mm;">
+    <span class="conn-icon">🎯</span>
+    <span><strong>Engineer path next steps:</strong> (1) Ask your lead which role gives persistent jump host SSH. (2) <code>tsh kube login us-central-07a-mgmt && kubectl get nodes</code>. (3) <code>tsh apps ls</code> to discover web apps. Each builds toward the Bare Metal Support Engineer conversation.</span>
+  </div>
+</section>
+
+</body>
+</html>
