@@ -424,6 +424,35 @@
 
 
 <!-- ═══════════════════════════════════════════════
+     STATUS BANNER
+═══════════════════════════════════════════════ -->
+<div style="background: linear-gradient(135deg, var(--cw-blue), var(--cw-blue-light)); color: white; padding: 16px 20px; margin: 0 auto; width: 210mm; border-radius: 0 0 12px 12px; box-shadow: 0 4px 16px rgba(66,100,255,0.2);">
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+    <svg style="width:20px;height:20px;"><use href="#cw-logo"/></svg>
+    <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85;">Current Status — April 1, 2026</span>
+  </div>
+  <div style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Your Teleport access works. The BMC app proxy is your intended workflow.</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11.5px;">
+    <div style="display: flex; align-items: flex-start; gap: 6px;">
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 7px; border-radius: 12px; font-size: 9px; font-weight: 800; flex-shrink: 0;">CONFIRMED</span>
+      <span><strong>BMC app proxy</strong> — <code style="background:rgba(255,255,255,0.15);padding:1px 5px;border-radius:3px;font-size:10px;">tsh apps login</code> + <code style="background:rgba(255,255,255,0.15);padding:1px 5px;border-radius:3px;font-size:10px;">tsh proxy app</code> establishes connection. No jump host needed. No approval needed.</span>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 6px;">
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 7px; border-radius: 12px; font-size: 9px; font-weight: 800; flex-shrink: 0;">TESTED</span>
+      <span><strong>r142-node-01 at 07a</strong> — proxy established but BMC backend timed out. Likely that specific BMC is down or has HTTPS disabled. Try other nodes or ask team.</span>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 6px;">
+      <span style="background: rgba(255,200,50,0.3); padding: 2px 7px; border-radius: 12px; font-size: 9px; font-weight: 800; flex-shrink: 0;">BLOCKED</span>
+      <span><strong>Jump host SSH</strong> — <code style="background:rgba(255,255,255,0.15);padding:1px 5px;border-radius:3px;font-size:10px;">tsh ssh acc@dh1-metal-jump01</code> requires access request + approval. Not practical without persistent role.</span>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 6px;">
+      <span style="background: rgba(255,255,255,0.2); padding: 2px 7px; border-radius: 12px; font-size: 9px; font-weight: 800; flex-shrink: 0;">NEXT</span>
+      <span><strong>Ask your lead:</strong> "Is BMC app proxy the right workflow for 07a, or do I need a persistent jump host SSH role?"</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
      PAGE 1 — THE BIG PICTURE
 ═══════════════════════════════════════════════ -->
 <section class="page">
